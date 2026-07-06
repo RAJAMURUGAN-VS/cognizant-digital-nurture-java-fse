@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Exercise 2: Spring XML Bean Configuration for SimpleDateFormat.
+
+    This file demonstrates:
+      - Spring XML configuration file structure
+      - <bean> element with id and class attributes
+      - <constructor-arg> for constructor injection
+      - Loading the bean via ClassPathXmlApplicationContext
+
+    spring-beans.xsd — the XML schema that validates the bean definitions.
+    When Spring loads this file, it creates a SimpleDateFormat instance
+    by calling: new SimpleDateFormat("dd/MM/yyyy")
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--
+        Bean definition for SimpleDateFormat.
+
+        id    = "dateFormat"          — unique identifier used in getBean()
+        class = "java.text.SimpleDateFormat" — fully qualified class name
+
+        <constructor-arg value="dd/MM/yyyy" />
+          — Spring calls: new SimpleDateFormat("dd/MM/yyyy")
+          — This is Constructor Injection: dependency provided via constructor.
+
+        By default, scope is SINGLETON — Spring creates ONE instance and
+        returns the same instance every time getBean("dateFormat") is called.
+    -->
+    <bean id="dateFormat" class="java.text.SimpleDateFormat">
+        <constructor-arg value="dd/MM/yyyy" />
+    </bean>
+
+</beans>

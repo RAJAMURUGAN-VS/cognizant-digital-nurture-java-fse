@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        Exercise 1: Spring Boot starter parent manages all dependency versions.
+        Provides sensible defaults for plugins, encoding, Java version etc.
+    -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.14</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.cognizant</groupId>
+    <artifactId>spring-learn</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>spring-learn</name>
+    <description>Demo project for Spring Boot - Spring REST Hands-on</description>
+
+    <properties>
+        <java.version>11</java.version>
+    </properties>
+
+    <dependencies>
+
+        <!--
+            Exercise 1: Spring Boot DevTools
+            Enables auto-restart on classpath changes during development.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!--
+            Exercise 1: Spring Web
+            Includes Spring MVC + embedded Tomcat server.
+            No need to deploy a WAR — Spring Boot starts its own Tomcat.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--
+            Exercise 2: Spring Context (XML application context support)
+            Provides ClassPathXmlApplicationContext for loading beans from XML.
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <!-- Spring Boot Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--
+                Spring Boot Maven Plugin: packages app as executable JAR
+                with embedded Tomcat. Run with: java -jar target/spring-learn.jar
+            -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Exercise 4, 5, 6: Spring XML Configuration for Country beans.
+
+    Demonstrates:
+      Exercise 4 : <bean> with <property> (Setter Injection)
+      Exercise 5 : singleton scope (default) and prototype scope
+      Exercise 6 : <list> of bean references, ArrayList bean
+
+    Setter Injection (Exercise 4):
+      <property name="code" value="IN" />
+      Spring calls: country.setCode("IN")
+      Requires a no-arg constructor + setter methods in Country.java.
+
+    Constructor Injection (Exercise 2 reference):
+      <constructor-arg value="..." />
+      Spring calls the constructor with the value.
+
+    Scope (Exercise 5):
+      Default (no scope attribute) = SINGLETON
+        → Spring creates ONE Country instance.
+        → Same instance returned by every getBean() call.
+      scope="prototype"
+        → Spring creates a NEW Country instance for every getBean() call.
+        → Constructor is called each time.
+
+    <list> and <ref> (Exercise 6):
+      <list>  — Spring XML tag for java.util.List
+      <ref bean="beanId"> — reference to another bean defined in this file
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- ============================================================
+         Exercise 4: Single country bean — Setter Injection
+         Change scope="prototype" to demonstrate Exercise 5.
+         ============================================================ -->
+
+    <!--
+        scope="singleton" (default — same as no scope attribute).
+        Spring creates this bean once; both getBean() calls return the same object.
+        Un-comment scope="prototype" and comment this to switch to prototype.
+    -->
+    <bean id="country"
+          class="com.cognizant.springlearn.Country">
+          <!-- scope="prototype" -->   <!-- Exercise 5: uncomment to test prototype -->
+        <property name="code" value="IN" />
+        <property name="name" value="India" />
+    </bean>
+
+    <!-- ============================================================
+         Exercise 6: Individual country beans for list
+         Each country is a separate bean — Setter Injection.
+         ============================================================ -->
+
+    <bean id="in" class="com.cognizant.springlearn.Country">
+        <property name="code" value="IN" />
+        <property name="name" value="India" />
+    </bean>
+
+    <bean id="us" class="com.cognizant.springlearn.Country">
+        <property name="code" value="US" />
+        <property name="name" value="United States" />
+    </bean>
+
+    <bean id="de" class="com.cognizant.springlearn.Country">
+        <property name="code" value="DE" />
+        <property name="name" value="Germany" />
+    </bean>
+
+    <bean id="jp" class="com.cognizant.springlearn.Country">
+        <property name="code" value="JP" />
+        <property name="name" value="Japan" />
+    </bean>
+
+    <!-- ============================================================
+         Exercise 6: ArrayList bean containing country bean references.
+
+         class="java.util.ArrayList"
+           — Spring creates an ArrayList using constructor injection.
+         <constructor-arg>
+           — Passes a <list> as the constructor argument.
+         <list>
+           — Spring's XML representation of java.util.List.
+         <ref bean="in">
+           — Reference to the bean with id="in" defined above.
+             Spring resolves this to the Country object.
+         ============================================================ -->
+    <bean id="countryList" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <ref bean="in" />
+                <ref bean="us" />
+                <ref bean="de" />
+                <ref bean="jp" />
+            </list>
+        </constructor-arg>
+    </bean>
+
+</beans>
