@@ -1,0 +1,16 @@
+package com.example.inventoryservice.dto;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class StockAdjustRequest {
+    @NotNull
+    private Long productId;
+    @NotNull
+    private Integer delta; // positive = restock, negative = consumption
+}

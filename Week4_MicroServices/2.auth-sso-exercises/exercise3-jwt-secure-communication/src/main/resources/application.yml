@@ -1,0 +1,16 @@
+server:
+  port: 8092
+
+spring:
+  application:
+    name: jwt-secure-communication
+  security:
+    jwt:
+      # Must be Base64-encoded and decode to at least 256 bits (32 bytes)
+      # for HS256. Generate your own with: openssl rand -base64 32
+      # This is a throwaway demo key — never commit a real secret like this.
+      secret: 3q2+796tvu/erb7v3q2+796tvu/erb7v3q2+796tvu8=
+
+logging:
+  level:
+    org.springframework.security: DEBUG

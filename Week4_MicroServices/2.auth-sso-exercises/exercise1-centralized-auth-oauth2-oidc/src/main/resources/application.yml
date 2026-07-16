@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: centralized-auth-oauth2-oidc
+  security:
+    oauth2:
+      client:
+        registration:
+          my-client:
+            # Replace with real values from your OAuth provider's console
+            # (e.g. Google Cloud Console -> APIs & Services -> Credentials)
+            client-id: YOUR_CLIENT_ID
+            client-secret: YOUR_CLIENT_SECRET
+            scope:
+              - openid
+              - profile
+              - email
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            provider: my-provider
+        provider:
+          my-provider:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
+            user-name-attribute: sub
+
+server:
+  port: 8090
+
+logging:
+  level:
+    org.springframework.security: DEBUG

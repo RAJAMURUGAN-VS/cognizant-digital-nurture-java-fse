@@ -1,0 +1,32 @@
+# Local fallback config (used if Config Server is unreachable, or for local-only settings).
+# The authoritative port/logging/threshold values come from Config Server's
+# config-repo/product-service.yml — this file is a safety net for local dev.
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:productdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh

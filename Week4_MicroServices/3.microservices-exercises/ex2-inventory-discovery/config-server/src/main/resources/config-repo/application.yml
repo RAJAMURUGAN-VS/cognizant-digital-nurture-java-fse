@@ -1,0 +1,9 @@
+# Shared config applied to ALL clients of this Config Server
+info:
+  contact: platform-team@example.com
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh

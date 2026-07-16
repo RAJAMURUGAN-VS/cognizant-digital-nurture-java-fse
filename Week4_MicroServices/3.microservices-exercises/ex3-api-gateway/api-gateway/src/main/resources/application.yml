@@ -1,0 +1,70 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      # Enables the "LocalResponseCache" filter used per-route below.
+      # Backed by Caffeine (in-memory), so GET responses on cacheable routes
+      # are served from cache until they expire — no external cache needed.
+      filter:
+        local-response-cache:
+          enabled: true
+          size: 10MB
+          time-to-live: 30s
+
+      routes:
+        # ---------------- Customer Service ----------------
+        # Public path:  /api/customers/**
+        # Internal path: /customers/**  (Customer Service only knows "/customers")
+        - id: customer-service
+          uri: http://localhost:8091
+          predicates:
+            - Path=/api/customers/**
+          filters:
+            # PATH REWRITING: strip the "/api" prefix before forwarding
+            - RewritePath=/api/customers/(?<segment>.*), /customers/${segment}
+
+            # RATE LIMITING: our custom in-memory token-bucket bean
+            - name: RequestRateLimiter
+              args:
+                rate-limiter: "#{@inMemoryRateLimiter}"
+                key-resolver: "#{@apiKeyResolver}"
+
+            # CACHING: cache GET responses for this route (Caffeine-backed)
+            - name: LocalResponseCache
+              args:
+                size: 5MB
+                timeToLive: 30s
+
+        # ---------------- Billing Service ----------------
+        # Public path:  /api/billing/**
+        # Internal path: /invoices/**
+        - id: billing-service
+          uri: http://localhost:8092
+          predicates:
+            - Path=/api/billing/**
+          filters:
+            - RewritePath=/api/billing/(?<segment>.*), /invoices/${segment}
+            - name: RequestRateLimiter
+              args:
+                rate-limiter: "#{@inMemoryRateLimiter}"
+                key-resolver: "#{@apiKeyResolver}"
+            - name: LocalResponseCache
+              args:
+                size: 5MB
+                timeToLive: 30s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
+    com.example.apigateway: INFO

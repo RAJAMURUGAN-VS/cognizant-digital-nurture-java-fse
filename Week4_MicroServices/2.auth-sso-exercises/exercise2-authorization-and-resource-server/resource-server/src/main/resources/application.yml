@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: resource-server
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Points at the authorization-server sub-project running on
+          # port 9000 (see ../authorization-server). Swap this for any
+          # real OIDC-compliant issuer (Okta, Auth0, Keycloak, Azure AD,
+          # Google, etc.) that exposes /.well-known/openid-configuration.
+          issuer-uri: http://localhost:9000
+
+server:
+  port: 8091
+
+logging:
+  level:
+    org.springframework.security: DEBUG

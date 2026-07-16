@@ -1,0 +1,59 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: payment-service
+
+# ---------------- Resilience4j Circuit Breaker ----------------
+resilience4j:
+  circuitbreaker:
+    instances:
+      paymentGateway:
+        # Use the last 10 calls to compute the failure/slow-call rate
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+
+        # Trip to OPEN if >= 50% of calls in the window fail
+        failure-rate-threshold: 50
+
+        # Also trip to OPEN if >= 50% of calls are "slow" (see below)
+        slow-call-rate-threshold: 50
+        slow-call-duration-threshold: 2s
+
+        # Stay OPEN for 10s before allowing a trial call through (HALF_OPEN)
+        wait-duration-in-open-state: 10s
+
+        # In HALF_OPEN, allow 3 trial calls to decide whether to re-CLOSE
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+
+        register-health-indicator: true
+        event-consumer-buffer-size: 20
+
+  # Optional: TimeLimiter can be combined with the circuit breaker for a
+  # declarative timeout instead of (or in addition to) WebClient's own
+  # responseTimeout. Kept here for completeness even though this project
+  # enforces the timeout at the WebClient level.
+  timelimiter:
+    instances:
+      paymentGateway:
+        timeout-duration: 2s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,circuitbreakers,circuitbreakerevents,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
+logging:
+  level:
+    com.example.paymentservice: INFO
+    io.github.resilience4j: INFO

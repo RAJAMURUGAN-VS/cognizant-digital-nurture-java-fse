@@ -1,0 +1,11 @@
+# Centralized config for inventory-service, served by Config Server
+server:
+  port: 8084
+
+inventory:
+  reorder-buffer: 5
+  warehouse-code: WH-CHN-01
+
+logging:
+  level:
+    com.example.inventoryservice: INFO

@@ -1,0 +1,11 @@
+# Centralized config for product-service, served by Config Server
+server:
+  port: 8083
+
+product:
+  low-stock-threshold: 10
+  default-currency: INR
+
+logging:
+  level:
+    com.example.productservice: INFO
