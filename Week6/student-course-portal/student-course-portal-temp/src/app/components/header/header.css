@@ -1,0 +1,16 @@
+nav{
+    background-color:#1976d2;
+    color:white;
+    padding:15px;
+}
+
+nav a{
+    color:white;
+    margin-right:20px;
+    text-decoration:none;
+}
+
+nav h2{
+    display:inline;
+    margin-right:40px;
+}

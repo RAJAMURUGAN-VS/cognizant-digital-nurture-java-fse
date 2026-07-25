@@ -1,0 +1,11 @@
+.course-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 6px;
+}
+
+button {
+  padding: 6px 12px;
+  cursor: pointer;
+}
